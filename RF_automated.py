@@ -35,10 +35,10 @@ clf = RandomForestClassifier(n_estimators=50, max_depth=5, random_state=32)
 
 clf.fit(X_train, y_train)
 
-print len(X_train)
-print accuracy_score(y_train, clf.predict(X_train))
-print len(X_test)
-print accuracy_score(y_test, clf.predict(X_test))
+print(len(X_train))
+print(accuracy_score(y_train, clf.predict(X_train)))
+print(len(X_test))
+print(accuracy_score(y_test, clf.predict(X_test)))
 
 predictions = clf.predict(X_test)
 
@@ -51,7 +51,7 @@ for vector, prediction, tag in zip(X_test, predictions, y_test):
         corrects.append(vector)
     else:
         mistakes.append((vector, prediction, tag))
-print len(mistakes), 'mistakes'
+print(len(mistakes), 'mistakes')
 mistakes = mistakes[:n_misses]
 
 
@@ -162,7 +162,7 @@ for tree in clf.estimators_:
                 feature_values[feature] = set()
             feature_values[feature].add(value)
 
-print '\t'.join(['Beta', 'Examples', 'Examples_with_optimal', 'avg_d_optimal', 'avg_d_optimize',  'avg_d_non_optimize', 'avg_d_optimize_to_optimal', 'avg_d_non_optimize_to_optimal', 'avg_optimize_iters', 'avg_non_optimize_iters', 'pct_optimize_found', 'pct_non_optimize_found', 'cnt_non_opt_found_something_else', 'cnt_mismatches'])
+print('\t'.join(['Beta', 'Examples', 'Examples_with_optimal', 'avg_d_optimal', 'avg_d_optimize',  'avg_d_non_optimize', 'avg_d_optimize_to_optimal', 'avg_d_non_optimize_to_optimal', 'avg_optimize_iters', 'avg_non_optimize_iters', 'pct_optimize_found', 'pct_non_optimize_found', 'cnt_non_opt_found_something_else', 'cnt_mismatches']))
 
 running_results = {}
 
@@ -194,7 +194,6 @@ for beta in np.arange(0.55, 0.975, 0.025):
         optimal_combination = find_optimal(clf, vector, feature_values, num_changes_allowed)
 
         if optimal_combination is not None:
-        # if True:
             has_optimal += 1
             sum_d_optimal += distance(vector, optimal_combination)
             if is_optimized_found:
@@ -233,7 +232,7 @@ for beta in np.arange(0.55, 0.975, 0.025):
                 str(round(100 * float(cnt_non_optimize_found) / has_optimal, 3)) + '%',
                 str(cnt_non_opt_found_something_else),
                 str(cnt_mismatches)]
-    print '\t'.join(to_print)
+    print('\t'.join(to_print))
 
 with open('rf_project_opt_results.p', 'wb') as f:
     pickle.dump(running_results, f)

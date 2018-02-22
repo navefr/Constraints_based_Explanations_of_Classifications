@@ -1,25 +1,14 @@
 __author__ = 'nfrost'
 
-import gzip
-import sys
 import random
 import os
+from keras.datasets import mnist
 
 random.seed(43)
-output_directory = 'C:/Users/nfrost/Google Drive/PhD/model_explainations/mnist_output'
+output_directory = 'output/mnist'
 run_type = 'only_deletion'
 
-def load_mnist():
-    path = r'C:/Users/nfrost/.keras/datasets/mnist.pkl.gz'
-    f = gzip.open(path, 'rb')
-    if sys.version_info < (3,):
-        data = cPickle.load(f)
-    else:
-        data = cPickle.load(f, encoding="bytes")
-    f.close()
-    return data
-
-(images_train, y_train), (images_test, y_test) = load_mnist()
+(images_train, y_train), (images_test, y_test) = mnist.load_data()
 
 n_samples = len(images_train)
 X_train = images_train.reshape((n_samples, -1))
@@ -34,10 +23,10 @@ clf = RandomForestClassifier(n_estimators=50, max_depth=6, random_state=52)
 
 clf.fit(X_train, y_train)
 
-print len(X_train)
-print accuracy_score(y_train, clf.predict(X_train))
-print len(X_test)
-print accuracy_score(y_test, clf.predict(X_test))
+print(len(X_train))
+print(accuracy_score(y_train, clf.predict(X_train)))
+print(len(X_test))
+print(accuracy_score(y_test, clf.predict(X_test)))
 
 predictions = clf.predict(X_test)
 
@@ -178,9 +167,9 @@ for i in range(10):
 
     prefix = str(i) + '_' + run_type
 
-    print
-    print 'Model Prediction', model_prediction
-    print 'Actual Tag', actual_tag
+    print()
+    print('Model Prediction', model_prediction)
+    print('Actual Tag', actual_tag)
 
     image = vector.reshape((28, 28))
     rgb_image = color.gray2rgb(image)
@@ -195,7 +184,7 @@ for i in range(10):
     plot_modified_and_diff(clf, plt, vector, modified_vector, prefix)
 
 
-print 'Mistakes', len(mistakes)
+print('Mistakes', len(mistakes))
 total_diffs_actual = np.zeros((28 * 28, 3))
 total_diffs_model_predicted = np.zeros((28 * 28, 3))
 

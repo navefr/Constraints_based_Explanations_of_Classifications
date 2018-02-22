@@ -6,7 +6,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.datasets import make_classification
 import numpy as np
 from decision_tree import DecisionTree
-import itertools
 import random
 import pickle
 
@@ -35,10 +34,10 @@ clf = RandomForestClassifier(n_estimators=50, max_depth=5, random_state=32)
 
 clf.fit(X_train, y_train)
 
-print len(X_train)
-print accuracy_score(y_train, clf.predict(X_train))
-print len(X_test)
-print accuracy_score(y_test, clf.predict(X_test))
+print(len(X_train))
+print(accuracy_score(y_train, clf.predict(X_train)))
+print(len(X_test))
+print(accuracy_score(y_test, clf.predict(X_test)))
 
 predictions = clf.predict(X_test)
 
@@ -51,7 +50,7 @@ for vector, prediction, tag in zip(X_test, predictions, y_test):
         corrects.append(vector)
     else:
         mistakes.append((vector, prediction, tag))
-print len(mistakes), 'mistakes'
+print(len(mistakes), 'mistakes')
 mistakes = mistakes[:n_misses]
 
 

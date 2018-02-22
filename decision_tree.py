@@ -1,6 +1,5 @@
 __author__ = 'nfrost'
 
-import sys
 import numpy as np
 import scipy
 
@@ -53,7 +52,7 @@ class DecisionTree:
         # Now, it's possible to get the tests that were used to predict a sample or
         # a group of samples. First, let's make it for the sample.
         node_index = node_indicator.indices[node_indicator.indptr[0]: node_indicator.indptr[1]]
-        print 'Path', node_index
+        print('Path', node_index)
         for node_id in node_index:
             if not self.is_leaf(node_id):
                 if x[self.feature[node_id]] <= self.threshold[node_id]:
@@ -100,7 +99,7 @@ class DecisionTree:
             return self.modify_point(x_new)
 
     def modify_to_value(self, x, value, constraints=lambda x: True, d=distance):
-        min_changes = sys.maxint
+        min_changes = float("inf")
         modified_point = None
         for node_id in range(self.n_nodes):
             if self.is_leaf(node_id) and self.node_prediction(node_id) == value:
@@ -129,7 +128,7 @@ class DecisionTree:
         return x_new
 
     def modify_to_value_sparse(self, x, value, constraints=lambda x: True, d=distance_sparse):
-        min_changes = sys.maxint
+        min_changes = float("inf")
         modified_point = None
         for node_id in range(self.n_nodes):
             if self.is_leaf(node_id) and self.node_prediction(node_id) == value:
