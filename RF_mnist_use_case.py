@@ -103,16 +103,9 @@ def constraints(points_tuple):
     changed = points_tuple[1]
 
     for i in range(len(original)):
-        if original[i] == 0 and changed[i] != 0:
+        if original[i] < changed[i]:
             return False
     return True
-
-
-def single_step_algorithm(trees, vector, actual_tag):
-    modified_vector = vector
-    for decision_tree in trees:
-        modified_vector = decision_tree.modify_to_value(modified_vector, actual_tag)
-    return modified_vector
 
 
 def multi_step_algorithm(clf, trees, vector, original_probas, actual_tag):
@@ -186,7 +179,6 @@ for i in range(10):
 
 print('Mistakes', len(mistakes))
 total_diffs_actual = np.zeros((28 * 28, 3))
-total_diffs_model_predicted = np.zeros((28 * 28, 3))
 
 average_img = np.zeros(28 * 28)
 
@@ -199,15 +191,12 @@ for mistake in mistakes:
     image = vector.reshape(28, 28)
 
     diffs_actual = get_diffs(vector, multi_step_algorithm(clf, trees, vector, original_probas, actual_tag))
-    diffs_model_predicted = get_diffs(vector, multi_step_algorithm(clf, trees, vector, original_probas, model_prediction))
 
     total_diffs_actual += diffs_actual
-    total_diffs_model_predicted += diffs_model_predicted
 
     average_img += vector
 
 total_diffs_actual /= len(mistakes)
-total_diffs_model_predicted /= len(mistakes)
 average_img /= len(mistakes)
 
 
@@ -220,11 +209,5 @@ plt.clf()
 plt.imshow(total_diffs_actual.reshape((28, 28, 3)), cmap='gray')
 plt.axis('off')
 image_name = '_'.join([run_type, 'avg_changes', str(actual_tag), 'tagged', str(actual_tag)])
-plt.savefig(os.path.join(output_directory, image_name + '.jpg'))
-plt.clf()
-
-plt.imshow(total_diffs_model_predicted.reshape((28, 28, 3)), cmap='gray')
-plt.axis('off')
-image_name = '_'.join([run_type, 'avg_changes', str(actual_tag), 'tagged', str(model_prediction)])
 plt.savefig(os.path.join(output_directory, image_name + '.jpg'))
 plt.clf()
